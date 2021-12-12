@@ -1,0 +1,351 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>PowerBI Project Documentation</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets\css\ls.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Stock Market Crash 2020</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Portfolio</a></li>
+							<li><a href="generic.html">Article about my thesis</a></li> 
+							<li><a href="elements.html">Stock PowerBI-Report</a></li>  
+							<li><a href="generic copy.html">Puzzle Game</a></li>
+							<li><a href="elements copy.html">Happiness Report</a></li> 
+							<li class="active"><a href="elements copy 2.html" >...</a></li> 
+
+						</ul>
+						<ul class="icons">
+							<!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+							<li><a href="https://github.com/timosch11" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+
+							<h1 style="text-align: center;">UI/UX-Design for a sustainable vacation APP</h1>
+    
+							<p style="text-align: center;"> Find more information in our <a  style="border: 0ch; padding: 0ch;" href="https://hoteco.wixsite.com/hoteco">development blog</a></p>
+							
+							<video width="1366" height="768" controls style="display: block; margin: 0 auto;">
+							<source src="images\Hoteco.mp4" type="video/mp4">
+							</video>
+
+							<h1 style="text-align: center;">Information System for property management</h1>
+							&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The goal was to create an information system from the ground up to manage propertys. We had a lot of requirements like automatically &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; check if monthly payments arrived or to seperate 
+							costs like heating costs in apartment buildings. We created a normalized (mainly 5th. &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; normal form) MSSQL Database with a CASE-Tool, created a web-based frontend with Angular, a backend with Java (SpringBoot) and &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shifted as much logic as possible towards the Database. We used a lot of 
+							T-SQL coding (trigger & stored procedures) for achieving our  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirements.
+							
+							<h4 style="text-align: center;">Database Design</h4>
+							<a href="#" class="image fit" style="color: black;"><img src="images\pic06.jpg" alt="" /></a> 
+							
+							<h4 style="text-align: center;">Frontend Design</h4>
+							<section class="posts">
+								<article>
+								
+									<a href="#" class="image fit"><img src="images\pic10.jpg" alt="" /></a>
+									
+								</article>
+								<article>
+								
+									<a href="#" class="image fit"><img src="images\pic11.jpg.png" alt="" /></a>
+									
+								</article>
+								<article>
+								
+									<a href="#" class="image fit"><img src="images\pic12.jpg" alt="" /></a>
+									
+								</article>
+								<article>
+								
+									<a href="#" class="image fit"><img src="images\pic13.jpg" alt="" /></a>
+									
+								</article>
+							</section>
+							<h4 style="text-align: center;">Stored Procedure to read statement of account, find out which amount belongs to which renter. Then check if it covers the amount he has to pay (general rent and charges) </h4>
+							<pre class="line-numbers">
+								<code class="language-python">
+									
+CREATE PROCEDURE Ss2101_transactionassignmentprocedure
+AS
+    SET nocount ON;
+
+    DECLARE @PostingDate       DATE,
+            @PaymentReason     VARCHAR(200),
+            @Amount            MONEY,
+            @DebitorCreditorID VARCHAR(200),
+            @PostingText       VARCHAR(200),
+            @RenterID          INT,
+            @AmountSplitted      MONEY,
+			@MieterNr   INT,
+			@HouseNr Int,
+			@AnzahlMieterProHouse int,
+            @AccountMovementID INT,
+			@Nebenk money,
+			@AnzahlMieterProHausAufsummiert int;
+    DECLARE ss2101_transactionassignemtcursor CURSOR FOR
+      SELECT *
+      FROM   ss2101_acountmovement;
+
+    OPEN ss2101_transactionassignemtcursor
+
+    FETCH next FROM ss2101_transactionassignemtcursor INTO @AccountMovementID,
+    @PostingDate, @PaymentReason, @Amount, @DebitorCreditorID, @PostingText;
+
+    WHILE @@FETCH_STATUS = 0
+     BEGIN 
+      IF ( 1 IN (SELECT RIGHT(value, 1)
+                 FROM   String_split(@PaymentReason, ' ')
+                 WHERE  Isnumeric(value) = 1) )
+          OR ( 0 IN (SELECT RIGHT(value, 1)
+                     FROM   String_split(@PaymentReason, ' ')
+                     WHERE  Isnumeric(value) = 1) )
+          OR ( 2 IN (SELECT RIGHT(value, 1)
+                     FROM   String_split(@PaymentReason, ' ')
+                     WHERE  Isnumeric(value) = 1) )
+          OR ( (SELECT value
+                FROM   String_split(@PaymentReason, ' ')
+                WHERE  lower(value) IN (SELECT lower(rlastname)
+                                 FROM   dbo.ss2101_renter)
+                        OR lower(value) IN (SELECT lower(rfirstname)
+                                     FROM   dbo.ss2101_renter)) IS NOT NULL )
+            BEGIN
+            
+			
+            SET @RenterID = (Select distinct re.RenterID from dbo.ss2101_Renter as re
+            inner join dbo.ss2101_LeaseContract as lc on lc.RenterID = re.RenterID
+            inner join dbo.ss2101_Appartment as ap on ap.AppartmentID = lc.AppartmentID
+            where lower(re.rLastName) in ( Select lower(value) from STRING_SPLIT(@PaymentReason , ' '))
+            or lower(re.rFirstName) in ( Select lower(value) from STRING_SPLIT(@PaymentReason , ' '))
+            or re.RenterID in ( Select value from STRING_SPLIT(@PaymentReason , ' ') where ISNUMERIC(value) = 1 and right(value,1) = 0)
+            or lc.ContractID in ( Select value from STRING_SPLIT(@PaymentReason , ' ') where ISNUMERIC(value) = 1 and right(value,1) = 2)
+            or ap.AppartmentID in ( Select value from STRING_SPLIT(@PaymentReason , ' ') where ISNUMERIC(value) = 1 and right(value,1) = 1))
+			
+							
+   
+           INSERT INTO dbo.ss2101_transaction
+            VALUES     ( @AccountMovementID,
+                         @RenterID,
+                         @PostingDate,
+                         'Miete',
+                         @Amount)
+
+            
+			END
+
+			ELSE if ( 4 IN (SELECT RIGHT(value, 1)
+                 FROM   String_split(@PaymentReason, ' ')
+                 WHERE  Isnumeric(value) = 1) )
+				 and ( 'enbw' IN (SELECT lower(value)
+                FROM   String_split(@DebitorCreditorID, ' ')) or
+				( 'strom' IN (SELECT lower(value)
+                FROM   String_split(@PaymentReason, ' '))))
+            BEGIN
+			SET @HouseNr = (SELECT value
+                                        FROM   String_split(@PaymentReason, ' ')
+                                        WHERE  Isnumeric(value) = 1
+										and value in (Select distinct Housenumber
+										from ss2101_House))
+
+			SET @AnzahlMieterProHouse = (Select count(*)
+                                        from dbo.ss2101_Appartment as ap
+										inner join dbo.ss2101_LeaseContract as lc 
+										on lc.AppartmentID = ap.AppartmentID
+                                        where Housenumber = @HouseNr)
+             
+			SET @AnzahlMieterProHausAufsummiert = (Select sum(NumberofPersons) 
+			                                       from dbo.ss2101_LeaseContract as lc
+			                                       inner join dbo.ss2101_Appartment ap on lc.AppartmentID = ap.appartmentID
+												   where Housenumber = @HouseNr)
+
+            SET @AmountSplitted = (@Amount/@AnzahlMieterProHausAufsummiert)
+			
+			 DECLARE ss2101_RenterCursor1 CURSOR FOR
+             SELECT RenterID
+             FROM   ss2101_LeaseContract as lc
+			 inner join ss2101_Appartment as ap on ap.AppartmentID = lc.AppartmentID
+			 where ap.AppartmentID in ( Select AppartmentID from ss2101_Appartment
+			 where Housenumber = @HouseNr);
+
+             OPEN ss2101_RenterCursor1
+
+             FETCH next FROM ss2101_RenterCursor1 INTO @RenterID;
+
+			 WHILE @@FETCH_STATUS = 0
+			 BEGIN
+			 SET @Nebenk = (Select top 1 NumberOfPersons
+			                from dbo.ss2101_LeaseContract
+							where RenterID = @RenterID and Active = 'J'
+							order by DateOfSignature desc)
+			 INSERT INTO dbo.ss2101_Transaction values ( @AccountMovementID,
+                         @RenterID,
+                         @PostingDate,
+                         'Strom',
+                         (@AmountSplitted*@Nebenk))
+            FETCH next FROM ss2101_RenterCursor1 INTO @RenterID;
+			END
+			CLOSE ss2101_RenterCursor1;
+			DEALLOCATE ss2101_RenterCursor1;
+			END
+
+			ELSE if ( 4 IN (SELECT RIGHT(value, 1)
+                 FROM   String_split(@PaymentReason, ' ')
+                 WHERE  Isnumeric(value) = 1) )
+				 and ( 'wasser' IN (SELECT lower(value)
+                 FROM   String_split(@PaymentReason, ' '))
+				 or  ('gas' IN (SELECT lower(value)
+                 FROM   String_split(@PaymentReason, ' '))))
+            BEGIN
+			
+			SET @HouseNr = (SELECT value
+                                        FROM   String_split(@PaymentReason, ' ')
+                                        WHERE  Isnumeric(value) = 1
+				        and value in (Select distinct Housenumber
+				        from ss2101_House))
+
+			SET @AnzahlMieterProHouse = (Select count(*)
+                                        from dbo.ss2101_Appartment as ap
+						inner join dbo.ss2101_LeaseContract as lc 
+						on lc.AppartmentID = ap.AppartmentID
+                                        where Housenumber = @HouseNr)
+             
+			SET @AnzahlMieterProHausAufsummiert = (Select sum(NumberofPersons) 
+			                                       from dbo.ss2101_LeaseContract as lc
+			                                       inner join dbo.ss2101_Appartment ap on lc.AppartmentID = ap.appartmentID
+							      where Housenumber = @HouseNr)
+
+            SET @AmountSplitted = (@Amount/@AnzahlMieterProHausAufsummiert)
+			
+			 DECLARE ss2101_RenterCursor2 CURSOR FOR
+             SELECT RenterID
+             FROM   ss2101_LeaseContract as lc
+			 inner join ss2101_Appartment as ap on ap.AppartmentID = lc.AppartmentID
+			 where ap.AppartmentID in ( Select AppartmentID from ss2101_Appartment
+			 where Housenumber = @HouseNr);
+
+             OPEN ss2101_RenterCursor2
+
+             FETCH next FROM ss2101_RenterCursor2 INTO @RenterID;
+
+			 WHILE @@FETCH_STATUS = 0
+			 BEGIN
+			 SET @Nebenk = (Select top 1 NumberOfPersons
+			                from dbo.ss2101_LeaseContract
+							where RenterID = @RenterID and Active = 'J'
+							order by DateOfSignature desc)
+			 INSERT INTO dbo.ss2101_Transaction values ( @AccountMovementID,
+                         @RenterID,
+                         @PostingDate,
+                         'Wasser/Gas',
+                         (@AmountSplitted*@Nebenk))
+            FETCH next FROM ss2101_RenterCursor2 INTO @RenterID;
+			END
+			CLOSE ss2101_RenterCursor2;
+			DEALLOCATE ss2101_RenterCursor2;
+			END
+			
+			
+
+			ELSE WAITFOR DELAY '00:00:00'
+		
+			FETCH next FROM ss2101_transactionassignemtcursor INTO
+            @AccountMovementID,
+            @PostingDate, @PaymentReason, @Amount, @DebitorCreditorID,
+            @PostingText;
+
+			
+            END
+    
+    CLOSE ss2101_transactionassignemtcursor;
+
+    DEALLOCATE ss2101_transactionassignemtcursor; 
+
+</code>
+</pre>
+<ul class="actions special">
+	<li><a class="button" href="https://github.com/timosch11/property_management_sys">to the Git Repository</a></li>
+</ul>
+					</div>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<!-- <section>
+						<form method="post" action="#">
+							<div class="fields">
+								<div class="field">
+									<label for="name">Timo Schwind</label>
+									<input type="text" name="name" id="name" />
+								</div>
+								<div class="field">
+									<label for="email">timo.schwind@gmx.de</label>
+									<input type="text" name="email" id="email" />
+								</div>
+								<div class="field">
+									<label for="message"></label>
+									<textarea name="message" id="message" rows="3"></textarea>
+								</div>
+							</div>
+							<ul class="actions">
+								<li><input type="submit" value="Send Message" /></li>
+							</ul>
+						</form>
+					</section> -->
+					<section class="split contact">
+						<section class="alt">
+							<h3>Address</h3>
+							<p>73728 Esslingen<br />
+							Hellerweg 47/1</p>
+						</section>
+						<section>
+							<h3>Phone</h3>
+							<p><a href="#">49 162 7461475</a></p>
+						</section>
+						<section>
+							<h3>Email</h3>
+							<p><a href="#">timo.schwind@gmx.de</a></p>
+						</section>
+						<section>
+							<h3>Social</h3>
+							<ul class="icons alt">
+								<!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li> -->
+								<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+							</ul>
+						</section>
+					</section>
+				</footer>
+				
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

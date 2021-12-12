@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Quicksand', sans-serif;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem 0;
+}
+
+.container {
+  margin-top: 100px;
+  background-color: white;
+  padding: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 5px;
+  margin-bottom: 2rem;
+}
+
+.game-cell {
+  width: 10rem;
+  height: 10rem;
+  background-color: aqua;
+  cursor: pointer;
+}
+
+.select-container {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.select-image-text {
+  position: relative;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #3c40c6;
+}
+
+.select-image-text::before, .select-image-text::after {
+  content: '';
+  width: 5rem;
+  height: 1px;
+  background-color: #3c40c6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.select-image-text::before {
+  left: -7rem;
+}
+
+.select-image-text::after {
+  right: -7rem;
+}
+
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 5px;
+}
+
+.img-container img {
+  position: relative;
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.active {
+  border: 2px dashed #3c40c6;
+}
+
+.shuffle-btn {
+  border: none;
+  outline: none;
+  width: 15rem;
+  padding: .8rem 2rem;
+  background-color: #3c40c6;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 500;
+  border-radius: .5rem;
+  display: grid;
+  margin: 2rem auto 0;
+  cursor: pointer;
+}
+
+.shuffle-btn:hover {
+  background-color: #575fcf;
+}
+
+.display-none {
+  display: none;
+}
+ .d{
+  width: 100%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  text-decoration: none;
+  color: black;
+ 
+}
+ .links{
+  width: 100%;
+  
+  top: 1px;
+  left: 1px;
+  float: left;
+  margin-right: 10px;
+  width: 150px;
+  height: 150px;
+  }
+  .marginheader{
+    width: 100%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    text-decoration: none;
+    margin-left: 25px;
+    margin-top: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: xx-large;
+    height: 150px;
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    background: linear-gradient(100deg, white, black) ;
+    }
+  .top{
+    position: absolute;
+    top: 50px;
+    width: 100%;
+  }
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
